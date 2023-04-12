@@ -10,6 +10,10 @@ const spaceship = {
     height: 20,
     angle: Math.random() * Math.PI * 2,
     speed: 1,
+    vx: 1,
+    vy: 0,
+    thrustPower: 0.1,
+    maxSpeed: 5,
 };
 
 let shots = [];
@@ -363,33 +367,68 @@ function drawSpaceship() {
 }
 
 function moveSpaceship() {
-    const delta = Math.cos(spaceship.angle) * spaceship.speed;
-    const epsilon = Math.sin(spaceship.angle) * spaceship.speed;
+    const realisticMovement = document.getElementById("realisticMovement").checked;
 
-    spaceship.x += delta;
-    spaceship.y += epsilon;
+    if (realisticMovement) {
+        const deltaThrust = Math.cos(spaceship.angle) * spaceship.speed * (keysPressed["ArrowUp"] ? spaceship.thrustPower * 0.5 : 0);
+        const epsilonThrust = Math.sin(spaceship.angle) * spaceship.speed * (keysPressed["ArrowUp"] ? spaceship.thrustPower * 0.5 : 0);
+
+        spaceship.vx = Math.min(spaceship.maxSpeed, spaceship.vx + deltaThrust);
+        spaceship.vy = Math.min(spaceship.maxSpeed, spaceship.vy + epsilonThrust);
+
+        spaceship.x += spaceship.vx;
+        spaceship.y += spaceship.vy;
+
+        spaceship.speed = Math.sqrt(spaceship.vx ** 2 + spaceship.vy ** 2);
+
+        // Bounce off the screen boundaries
+        if (spaceship.x < 0) {
+            spaceship.vx = Math.abs(spaceship.vx);
+            spaceship.x = 0;
+        } else if (spaceship.x > canvas.width) {
+            spaceship.vx = -Math.abs(spaceship.vx);
+            spaceship.x = canvas.width;
+        }
+
+        if (spaceship.y < 0) {
+            spaceship.vy = Math.abs(spaceship.vy);
+            spaceship.y = 0;
+        } else if (spaceship.y > canvas.height) {
+            spaceship.vy = -Math.abs(spaceship.vy);
+            spaceship.y = canvas.height;
+        }
+    } else {
+        const delta = Math.cos(spaceship.angle) * spaceship.speed;
+        const epsilon = Math.sin(spaceship.angle) * spaceship.speed;
+
+        spaceship.x += delta;
+        spaceship.y += epsilon;
+
+        spaceship.vx = delta;
+        spaceship.vy = epsilon;
+
+        // Bounce of the screen boundaries
+        if (spaceship.x < 0) {
+            spaceship.angle = Math.PI - spaceship.angle;
+            spaceship.x = 0;
+        } else if (spaceship.x > canvas.width) {
+            spaceship.angle = Math.PI - spaceship.angle;
+            spaceship.x = canvas.width;
+        }
+
+        if (spaceship.y < 0) {
+            spaceship.angle = -spaceship.angle;
+            spaceship.y = 0;
+        } else if (spaceship.y > canvas.height) {
+            spaceship.angle = -spaceship.angle;
+            spaceship.y = canvas.height;
+        }
+    }
 
     // Change angle randomly
     if (Math.random() < 0.01) {
         spaceship.angle += Math.random() * 0.4 - 0.2;
         spaceship.angle = normalizeAngle(spaceship.angle);
-    }
-
-    // Bounce of the screen boundaries
-    if (spaceship.x < 0) {
-        spaceship.angle = Math.PI - spaceship.angle;
-        spaceship.x = 0;
-    } else if (spaceship.x > canvas.width) {
-        spaceship.angle = Math.PI - spaceship.angle;
-        spaceship.x = canvas.width;
-    }
-
-    if (spaceship.y < 0) {
-        spaceship.angle = -spaceship.angle;
-        spaceship.y = 0;
-    } else if (spaceship.y > canvas.height) {
-        spaceship.angle = -spaceship.angle;
-        spaceship.y = canvas.height;
     }
 
     // Make sure angle stays in correct range
@@ -439,10 +478,10 @@ function gameLoop() {
         spaceship.angle = normalizeAngle(spaceship.angle);
     }
     if (keysPressed["ArrowUp"]) {
-        spaceship.speed = Math.min(5, spaceship.speed + 0.1);
+        spaceship.speed = Math.min(spaceship.maxSpeed, spaceship.speed + spaceship.thrustPower);
     }
     if (keysPressed["ArrowDown"]) {
-        spaceship.speed = Math.max(0, spaceship.speed - 0.1);
+        spaceship.speed = Math.max(0, spaceship.speed - spaceship.thrustPower);
     }
 
     if (Math.random() < 0.01) {

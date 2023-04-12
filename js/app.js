@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     const toggleMainBtn = document.getElementById('toggleMain');
+    const toggleCheckbox = document.getElementById('realisticMovement');
     const mainContent = document.getElementById('mainContent');
     const arrow = document.getElementById('arrow');
 
@@ -16,6 +17,10 @@ document.addEventListener('DOMContentLoaded', function () {
             mainContent.classList.add('fade-out');
             toggleMainBtn.textContent = 'Show Description';
         }
+    });
+
+    toggleCheckbox.addEventListener('click', function () {
+        toggleCheckbox.blur();
     });
 
     // Hide the description after 15 seconds and show the big arrow
