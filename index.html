@@ -1,0 +1,89 @@
+
+<!doctype html>
+<html lang="en" class="h-100">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Asteroids by Chris</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/app.css" rel="stylesheet">
+    <meta name="theme-color" content="#712cf9">
+</head>
+<body class="d-flex flex-column h-100">
+
+<header>
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background-color: rgba(0,0,0,0.7)">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="https://digiconsult.no" target="_blank">
+                <img src="img/white_transparent_narrow.png" width="120" height="50" alt="Asteroids by Chris">
+                Asteroids
+            </a>
+            <button class="btn btn-primary" id="toggleMain">Hide Description</button>
+        </div>
+    </nav>
+
+</header>
+
+<div class="arrow" id="arrow">Click me to show description! </div>
+
+<!-- Begin page content -->
+<main class="flex-shrink-0 fade-in" id="mainContent">
+    <div class="container">
+        <h1 class="mt-5">Asteroids by Chris</h1>
+        <p>This is a computer game where the player controls a spaceship, shoots objects, and earns points based on object size, speed, and distance from the spaceship.</p>
+        <p class="lead">Code Structure</p>
+        <p>The JavaScript code is organized into several functions and objects to handle different aspects of the game:</p>
+        <ul>
+            <li>Spaceship: Represents the player's spaceship, including its position, speed, angle, and drawing logic.</li>
+            <li>Object: Represents an asteroid in the game, including its size, shape, position, speed, and drawing logic.</li>
+            <li>Shot: Represents a shot fired by the spaceship, including its position, speed, angle, and drawing logic.</li>
+            <li>PointAnimation: Represents the point animation displayed when an object is hit, including its
+                position, size, duration, and drawing logic.</li>
+        </ul>
+        <p>The main game loop is controlled by the update function, which calls various update and drawing functions for
+            the spaceship, objects, shots, and point animations.</p>
+
+        <p class="lead">Controls</p>
+        <p>The following keys control the spaceship and game interactions:</p>
+        <ul>
+            <li>Arrow Left: Rotate the spaceship left.</li>
+            <li>Arrow Right: Rotate the spaceship right.</li>
+            <li>Arrow Up: Increase the spaceship's speed.</li>
+            <li>Arrow Down: Decrease the spaceship's speed.</li>
+            <li>Space: Fire a shot from the spaceship.</li>
+        </ul>
+        <p class="lead">Scoring</p>
+        <p>Points are calculated for each object hit based on its size, speed, and distance from the spaceship. The
+            formula for calculating the points is as follows:</p>
+        <p><strong>points = base_points * (1 + size_factor + speed_factor + distance_factor)</strong></p>
+        <ul>
+            <li>base_points: A constant value representing the base points for hitting an object.</li>
+            <li>size_factor: A multiplier based on the object's size (smaller objects have a higher multiplier).</li>
+            <li>speed_factor: A multiplier based on the object's speed (faster objects have a higher multiplier).</li>
+            <li>distance_factor: A multiplier based on the distance between the object and the spaceship (objects further away have a higher multiplier).</li>
+        </ul>
+        <p class="lead">Software Architecture</p>
+        The game is built using JavaScript and the HTML5 Canvas API. It follows a modular approach, with each game element (spaceship, object, shot, and point animation) encapsulated in its own object with its own properties and methods. The main game loop (update function) orchestrates the interactions between these elements and handles the game's state.
+        The game also leverages event listeners to handle user input (keyboard events) and detect collisions between game elements. The use of event listeners allows for a responsive and interactive gameplay experience.
+
+        <p class="lead">Getting Started</p>
+        Use the arrow keys to control the spaceship and the spacebar to fire shots at the objects. Earn points by hitting objects and see how high of a score you can achieve!
+    </div>
+</main>
+
+<footer class="footer mt-auto py-3 bg-light align-content-center">
+    <div class="container" style="position: sticky; z-index: 1000">
+        <span class="text-muted">Asteroids game by <a href="https://chrisles.com" target="_blank">Chris Les</a></span>
+    </div>
+</footer>
+
+<canvas class="overlay"></canvas>
+
+<script src="js/bootstrap.bundle.min.js"></script>
+<script src="js/game.js"></script>
+<script src="js/app.js"></script>
+
+
+</body>
+</html>
